@@ -1,3 +1,6 @@
+# FXKeychain [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+
+
 Purpose
 --------------
 
@@ -50,13 +53,13 @@ Code injection is a low risk on iOS (unless the device is jailbroken). On Mac OS
 
 Properties
 ------------------
-    
+
 `FXKeychain` has the following properties:
 
 ```objc
 @property (nonatomic, copy, readonly) NSString *service;
 ```
-    
+
 The `service` property is used to distinguish between multiple apps or services on a given device or within the same app. On Mac OS and the iOS simulator, services are shared between apps, so it's a good idea to use something unique for the service, such as the application bundle ID, or the same value as the accessGroup if you wish to share a service between multiple apps. The service value cannot be changed after the keychain has been created.
 
 ```objc
@@ -78,7 +81,7 @@ Methods
 ```objc
 + (instancetype)defaultKeychain;
 ```
-    
+
 This method returns a shared default keychain instance, which uses the app's bundle ID for the service to avoid namespace collisions with other apps on Mac OS or the iOS simulator.
 
 ```objc
@@ -96,7 +99,7 @@ This method creates a new `FXKeychain` instance with the specified parameters. E
 - (BOOL)setObject:(id)object forKey:(id)key;
 - (BOOL)setObject:(id)object forKeyedSubscript:(id)key;
 ```
-    
+
 These methods will save the specified object in the keychain. Any plist-compatible object (`NSDictionary`, `NSArray`, `NSString`, `NSNumber`, `NSDate`, `NSNull`) can be stored. Objects of type `NSString` will be stored as UTF8-encoded data, and are intercompatible with other keychain solutions. Any other object type will be stored using binary plist encoding. Passing a value of `nil` as the object will remove the key from the keychain. Passing an object of any other type (or a collection containing an object of any other type) will throw an exception. The second form of this method is functionally identical to the first, but is included to support the modern Objective-C keyed subscripting syntax.
 
 ```objc
@@ -117,21 +120,21 @@ FXKeychainAccess values
 --------------------------------
 
     FXKeychainAccessibleWhenUnlocked
-    
+
 This is the default value. Keychain items set with this accessibility level can only be accessed when the device is unlocked. If your app needs to access the keychain when running in the background, this may cause problems.
-    
+
     FXKeychainAccessibleAfterFirstUnlock
-    
+
 Keychain items set with this accessibility level can be accessed once the keychain has been unlocked, and will remain accessible until the device is restarted, even if the device is locked again in the meantime. This is a good choice for items that need to be accessed by background services.
-    
+
     FXKeychainAccessibleAlways
-    
+
 Keychain items set with this accessibility level can be accessed at any time. This isn't very secure compared with the other options, but it's still better than storing values in plain text in the file system!
-    
+
     FXKeychainAccessibleWhenUnlockedThisDeviceOnly
     FXKeychainAccessibleAfterFirstUnlockThisDeviceOnly
     FXKeychainAccessibleAlwaysThisDeviceOnly
-    
+
 These values behave the same way as their non-ThisDeviceOnly counterparts, except that they are not backed up and restored if the device is reset or upgraded, and are therefore more secure (but also less reliable).
 
 
